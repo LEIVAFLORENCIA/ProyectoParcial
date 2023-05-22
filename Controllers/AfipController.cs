@@ -11,21 +11,40 @@ namespace ProyectoParcial.Controllers
          *  - Leiva, Florencia
          *  - Leiva. Pablo
         */
-        public IActionResult Index()
-        {
-            var model = new Contribuyente();
 
-            return View(model);
-        }
+        public static List<Contribuyente> listContribuyentes = new List<Contribuyente>();
 
-        [HttpPost] public void HandleForm(Contribuyente newContribuyente)
+        public async Task<IActionResult> Index()
         {
-            if (ModelState.IsValid)
+            if(listContribuyentes.Count == 0)
             {
-                var listContribuyentes = new List<Contribuyente>();
-                listContribuyentes.Add(newContribuyente);
+                var contribuyenteDefault = new Contribuyente
+                {
+                    CondIVA = "Exento",
+                    Cuit = "27123456786",
+                    RazonSocial = "Razon Social Test SRL",
+                    Domicilio = "Calle falsa 123",
+                    Email = "test@gmail.com",
+                    SelectedCondVenta = new List<String>(new[] { "Contado", "Otra" })
+                };
+                listContribuyentes.Add(contribuyenteDefault);
             }
 
+            return View(listContribuyentes);
+
+        }
+
+        [HttpPost] 
+        public async Task<IActionResult> HandleForm(Contribuyente newContribuyente)
+        {
+            listContribuyentes.Add(newContribuyente);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult CreateContribuyente()
+        {
+            var model = new Contribuyente();
+            return View(model);
         }
     }
 }

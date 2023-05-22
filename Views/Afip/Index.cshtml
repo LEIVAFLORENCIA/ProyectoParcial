@@ -1,59 +1,61 @@
-﻿@model ProyectoParcial.Models.Contribuyente
+﻿@model IEnumerable<ProyectoParcial.Models.Contribuyente>
 
-@using (Html.BeginForm("HandleForm", "Afip", FormMethod.Post))
-
-{
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.LabelFor(m => m.CondIVA)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DropDownListFor(m => m.CondIVA, new SelectList(new[]{"Monotributista", "Responsable Inscripto", "Exento"}), "Seleccione una opción")
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.LabelFor(m => m.Cuit)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.TextBoxFor(m => m.Cuit)
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.LabelFor(m => m.RazonSocial)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.TextBoxFor(m => m.RazonSocial)
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.LabelFor(m => m.Domicilio)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.TextBoxFor(m => m.Domicilio)
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.LabelFor(m => m.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.TextBoxFor(m => m.Email, new { type = "email" })
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.LabelFor(m => m.CondVenta)
-        </dt>
-        <dd class="col-sm-10">
-        @foreach (var cond in Model.CondVenta)
-        {
-            <input type="checkbox" name="SelectedCondVenta" value="@cond.Value" />
-            <label for="@cond.Text">@cond.Text</label>
-        }
-        </dd>
-        
-        <dd class="col-sm-12">
-            <input type="submit" value="Enviar" />
-        </dd>
-    </dl>
-
-
+@{
+    ViewData["Title"] = "Lista de Contribuyentes";
 }
+
+<h1>Lista de Contribuyentes</h1>
+<p>
+    <a asp-action="CreateContribuyente">Cargar contribuyente</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.CondIVA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Cuit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.RazonSocial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Domicilio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.CondVenta)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contribuyente in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => contribuyente.CondIVA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contribuyente.Cuit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contribuyente.RazonSocial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contribuyente.Domicilio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contribuyente.Email)
+                </td>
+                <td>
+                    @string.Join(", ", contribuyente.SelectedCondVenta)
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
